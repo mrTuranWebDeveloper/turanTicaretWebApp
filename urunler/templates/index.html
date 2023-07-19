@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neos E-Ticaret</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body data-bs-theme="dark">
+
+      {% include "includes/_navbar.html" %}
+
+      {% if messages %}
+
+      {% for mesaj in messages %}
+        <div class="alert alert-{{mesaj.tags}} text-center">
+            {{mesaj}}
+        </div>
+      {% endfor %}
+      
+      {% else %}
+      {% endif %}
+
+      {% block content %}
+      <div class="container mt-5">
+        <div class="row">
+            {% if urunler|length > 0 %}
+            
+           
+            {% for urun in urunler %}
+                <div class="col-4 mb-4">
+                    <div class="card">
+                        <img src="{{urun.resim.url}}" height="200" class="card-img-top" alt="{{urun.isim}}">
+                        <div class="card-body">
+                          <h5 class="card-title">{{urun.isim}}</h5>
+                          <p>{{urun.kategori.isim}}</p>
+                          <p>{{urun.seri_no.no}}</p>
+                          {% for alt in urun.altKategori.all %}
+                            <small>{{alt.isim}}</small>
+                          {% endfor %}
+                          {% autoescape off %} 
+                          <p class="card-text">{{urun.aciklama}}</p>
+                          {% endautoescape %}
+                          <p class="card-text">{{urun.fiyat}}</p>
+                          <a href="{% url 'detay' urun.id %}" class="btn btn-primary">Ürünü İncele</a>
+                          <!-- <a href="/urun-detay/{{urun.id}}" class="btn btn-primary">Ürünü İncele</a> -->
+                        </div>
+                      </div>
+                </div>
+            {% endfor %}
+            {% else %}
+            <h1 class="text-center">
+              Eşleşen Ürün Bulunamadı!
+            </h1>
+            {% endif %}
+
+        </div>
+      </div> 
+      {% endblock content %}
+     
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>
